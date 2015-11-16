@@ -32,7 +32,7 @@ class GameGUI(Breakout.Breakout):
     def initGame(self):
         print "Initializing game...",
         pygame.init()
-        self.stage.genDemoStage()
+        self.genDemoStage()
         self.screen = pygame.display.set_mode((self.board_w, self.board_h))
         pygame.display.set_caption("BREAKOUT")
         self.font = pygame.font.Font(None, 50)
@@ -164,6 +164,9 @@ class GameGUI(Breakout.Breakout):
             self.drawBlocks()
             pygame.display.update(dirty_rects)
 
+            # check fps
+            #print self.clock.get_fps()
+
             ###################
             # event processing
             for event in pygame.event.get():
@@ -171,6 +174,9 @@ class GameGUI(Breakout.Breakout):
                    (event.type==KEYDOWN and event.key == K_ESCAPE):
                     pygame.quit()
                     quit()
+                elif (event.type==KEYDOWN and event.key == K_RETURN):
+                    self.reset()
+                    self.initDraw()
 
 # Simple Test
 if __name__ == "__main__":  

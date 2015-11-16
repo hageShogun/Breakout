@@ -1,5 +1,7 @@
 import Block
 
+# TODO:
+# broken_flgs shuld not be used since it is Double definition.
 class Stage:
     def __init__(self):
         self.nblocks = None
@@ -34,6 +36,12 @@ class Stage:
         self.broken_flgs[i] = flg
         self.blocks[i].setBrokenFlg(flg)
         self.broken_cnt += 1
+
+    def reset(self):
+        for block in self.blocks:
+            block.setBrokenFlg(False)
+        self.broken_flgs = [False] * self.nblocks
+        self.broken_cnt = 0
 
     def dump(self):
         print "nblocks:", self.nblocks
