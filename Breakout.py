@@ -1,5 +1,4 @@
 import random
-
 import pygame
 from pygame.locals import *
 import Paddle
@@ -10,7 +9,7 @@ import MyPlayer
 
 class Breakout:
     def __init__(self, board_w=400, board_h=700,\
-                 paddle_w=80, paddle_h=20, ball_r=10, ball_v=5):
+                 paddle_w=80, paddle_h=20, ball_r=10, ball_vunit=5):
         self.board_w = board_w
         self.board_h = board_h
         self.paddle_w = paddle_w
@@ -20,7 +19,8 @@ class Breakout:
         self.paddle = Paddle.Paddle(board_w/2, paddle_w)
         self.ball_r = ball_r
         self.ball_pos = [self.board_w/2, self.board_h/2]
-        self.ball_v = [ball_v*random.choice([-1,1]),ball_v*random.choice([-1,1])]
+        self.ball_v = [ball_vunit*random.choice([-1,1]),ball_vunit*random.choice([-1,1])]
+        self.ball_vunit = ball_vunit
         self.ball_a = [0,0]
         self.ball = Ball.Ball(self.ball_r, self.ball_pos, self.ball_v, self.ball_a)
         self.stage = Stage.Stage()
@@ -29,8 +29,32 @@ class Breakout:
         self.result = None
         self.player = None
 
+    # TODO: stage data load function
+    def loadStage(self, stage_file):
+        print "ERROR: this method have not been implemented yet."
+        quit()
+        return 0
+
+    def genDemoStage(self):
+        self.stage.genDemoStage()
+
     def getStage(self):
         return self.stage
+
+    def reset(self):
+        # ball reset
+        self.ball.setPosition([self.board_w/2, self.board_h/2])
+        self.ball_pos = [self.board_w/2, self.board_h/2]
+
+        self.ball_v = [self.ball_vunit*random.choice([-1,1]),self.ball_vunit*random.choice([-1,1])]
+        # paddle reset
+        self.paddle.setX(self.board_w/2)
+        # stage reset
+        self.stage.reset()
+        # game state reset
+        self.score = 0
+        self.result = None
+
 
     def movePaddle(self, dir_and_width):
         cur_x = self.paddle.getX()
@@ -44,10 +68,12 @@ class Breakout:
 
     def updateBallPosition(self):
         self.ball_pos = self.ball.calcNextPosition()
+        # wall reflection
         if self.ball_pos[0] <= 0 or self.ball_pos[0] >= self.board_w:
             self.ball.reflect("x")
         if self.ball_pos[1] <= 0:
             self.ball.reflect("y")
+        #
         if self.ball_pos[1] >= self.board_h:
             self.result = "GAMEOVER"
             return [self.score, self.result]
@@ -128,6 +154,7 @@ class Breakout:
     def addPlayer(self, player):
         self.player = player
 
+    # TODO
     def run(self):
         return 0
         
