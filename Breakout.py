@@ -24,7 +24,7 @@ class Breakout:
         self.ball_a = [0,0]
         self.ball = Ball.Ball(self.ball_r, self.ball_pos, self.ball_v, self.ball_a)
         self.stage = Stage.Stage()
-        self.new_broken_block = None
+        self.new_broken_blocks = []
         self.score = 0
         self.result = None
         self.player = None
@@ -100,7 +100,7 @@ class Breakout:
 
 
     def HitCheckForBallAndBlocks(self):
-        self.new_broken_block = None
+        self.new_broken_blocks = []
         blocks = self.stage.getBlocks()
         broken_flgs = self.stage.getBrokenFlgs()
         for i, broken_flg in enumerate(broken_flgs):
@@ -143,7 +143,7 @@ class Breakout:
 
                 if hit_flg:
                     self.stage.setBrokenFlg(True, i)
-                    self.new_broken_block = i
+                    self.new_broken_blocks.append(i)
                     self.score += 1
                     if self.stage.checkClear():
                         self.result = "CLEAR"

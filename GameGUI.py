@@ -88,6 +88,10 @@ class GameGUI(Breakout.Breakout):
                 rect = Rect(block_left, block_top, block_size[0], block_size[1])
                 pygame.draw.rect(self.screen, col_block,rect)
 
+    def deleteBlocks(self, new_broken_blocks, dirty_rects=[]):
+        for i in new_broken_blocks:
+            self.deleteBlock(i, dirty_rects)
+
     def deleteBlock(self, i, dirty_rects=[]):
         block = self.stage.getBlocks()[i]
         block_pos = block.getPosition()
@@ -139,7 +143,7 @@ class GameGUI(Breakout.Breakout):
       
     def run(self):
         while True:
-            self.clock.tick(30) # 60 fps
+            self.clock.tick(60) # 60 fps
             dirty_rects = []
             ###################
             # update object state
@@ -159,8 +163,9 @@ class GameGUI(Breakout.Breakout):
             self.drawScore(dirty_rects)
             self.drawBall()
             self.drawPaddle()
-            if self.new_broken_block is not None:
-                self.deleteBlock(self.new_broken_block, dirty_rects)
+            if len(self.new_broken_blocks) != 0:
+                print len(self.new_broken_blocks)
+                self.deleteBlocks(self.new_broken_blocks, dirty_rects)
             self.drawBlocks()
             pygame.display.update(dirty_rects)
 
